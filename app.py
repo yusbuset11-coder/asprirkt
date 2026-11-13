@@ -280,7 +280,6 @@ if not st.session_state.logged_in:
 
         waktu_sekarang = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        # --- 1. KIRIM KE GOOGLE SHEETS SECARA ONLINE ---
         try:
           payload = {
               "timestamp": waktu_sekarang,
@@ -291,7 +290,6 @@ if not st.session_state.logged_in:
         except Exception:
           pass
 
-        # --- 2. CADANGAN: CATAT KE CSV LOKAL ---
         log_file = "school_users_log.csv"
         log_data = pd.DataFrame([{
             "Timestamp": waktu_sekarang,
@@ -313,7 +311,6 @@ if not st.session_state.logged_in:
             " benar!"
         )
 
-  # --- FOOTER / NAMA PENGEMBANG DI BAWAH HALAMAN LOGIN ---
   st.markdown(
       """
         <div style="max-width: 560px; margin: 8px auto 0 auto; text-align: center;">
@@ -328,7 +325,7 @@ if not st.session_state.logged_in:
   st.stop()
 
 
-# --- FUNGSI SMART GENERATOR IMPLEMENTASI OPERASIONAL & KONKRET ---
+# --- FUNGSI SMART GENERATOR DINAMIS (UNIK PER BARIS) ---
 def generate_penjelasan_operasional_cerdas(kegiatan, akar_masalah):
   k_clean = kegiatan.strip()
   if k_clean.endswith("."):
@@ -337,7 +334,8 @@ def generate_penjelasan_operasional_cerdas(kegiatan, akar_masalah):
   k_lower = k_clean.lower()
   a_lower = akar_masalah.lower()
 
-  # 1. KELOMPOK KOMUNITAS BELAJAR (KOMBEL) & REFLEKSI PEMBELAJARAN
+  k_singkat = k_clean[:90] + "..." if len(k_clean) > 90 else k_clean
+
   if any(
       kw in k_lower or kw in a_lower
       for kw in [
@@ -351,17 +349,15 @@ def generate_penjelasan_operasional_cerdas(kegiatan, akar_masalah):
       ]
   ):
     return (
-        "1. Membentuk Tim Pengelola Komunitas Belajar (Kombel) tingkat satuan"
-        " pendidikan.\n"
-        "2. Menyusun jadwal kegiatan diskusi rutin minimal 2 minggu sekali"
-        " untuk membedah rapor pendidikan.\n"
-        "3. Melaksanakan berbagi praktik baik (sharing session), observasi"
-        " kelas antar-guru, dan pemberian umpan balik konstruktif.\n"
-        "4. Menyusun laporan hasil refleksi pembelajaran dan tindak lanjut"
-        " perbaikan perangkat ajar."
+        f"1. Membentuk tim pengelola / fasilitator untuk program:"
+        f" {k_singkat}.\n"
+        "2. Menyusun jadwal pertemuan berkala guna mendiskusikan strategi dan"
+        " evaluasi pelaksanaan.\n"
+        "3. Melaksanakan praktik baik, diskusi reflektif, serta kolaborasi"
+        " antar-pendidik secara terstruktur.\n"
+        "4. Melakukan penilaian sejawat, evaluasi berkala, dan pelaporan"
+        " tindak lanjut ke kepala satuan pendidikan."
     )
-
-  # 2. KELOMPOK PENINGKATAN KOMPETENSI / PELATIHAN / GURU & KEPSEK
   elif any(
       kw in k_lower or kw in a_lower
       for kw in [
@@ -370,21 +366,19 @@ def generate_penjelasan_operasional_cerdas(kegiatan, akar_masalah):
           "bimtek",
           "workshop",
           "narasumber",
-          "aktivitas belajar guru",
+          "aktivitas belajar",
       ]
   ):
     return (
-        "1. Mengidentifikasi guru/kepala sekolah sasaran program peningkatan"
-        " kompetensi.\n"
-        "2. Menyusun Kerangka Acuan Kerja (KAK), jadwal, dan anggaran"
-        " perjalanan/pelatihan yang diperlukan.\n"
-        "3. Menugaskan perwakilan guru mengikuti pelatihan/workshop dan"
-        " melaksanakan diseminasi/pengimbasan di sekolah.\n"
-        "4. Mengevaluasi penerapan hasil pelatihan ke dalam modul ajar dan"
-        " aktivitas belajar di kelas."
+        f"1. Menugaskan guru/kepala sekolah sasaran untuk mengikuti program:"
+        f" {k_singkat}.\n"
+        "2. Menyiapkan Kerangka Acuan Kerja (KAK), jadwal pelaksanaan, serta"
+        " anggaran yang diperlukan.\n"
+        "3. Menyelenggarakan kegiatan lokakarya atau pengimbasan materi kepada"
+        " seluruh dewan guru di sekolah.\n"
+        "4. Menerapkan hasil peningkatan kompetensi ke dalam modul ajar/praktik"
+        " nyata di kelas."
     )
-
-  # 3. KELOMPOK SARANA, PRASARANA, MEDIA, & LITERASI/NUMERASI
   elif any(
       kw in k_lower or kw in a_lower
       for kw in [
@@ -403,17 +397,15 @@ def generate_penjelasan_operasional_cerdas(kegiatan, akar_masalah):
       ]
   ):
     return (
-        "1. Melakukan inventarisasi kebutuhan riil sarana/media pendukung"
-        " pembelajaran di kelas.\n"
+        f"1. Melakukan inventarisasi dan analisis kebutuhan riil untuk"
+        f" mendukung: {k_singkat}.\n"
         "2. Menyusun Rencana Anggaran Biaya (RAB) dan melaksanakan pengadaan"
-        " barang/jasa sesuai ketentuan ARKAS/BOS.\n"
-        "3. Melakukan serah terima, pencatatan inventaris, dan pendistribusian"
-        " sarana ke ruang kelas/laboratorium.\n"
-        "4. Memanfaatkan media secara optimal dalam KBM interaktif serta"
+        " sesuai regulasi ARKAS/BOS.\n"
+        "3. Melakukan serah terima barang, pencatatan inventaris, serta"
+        " pendistribusian kepada pihak terkait.\n"
+        "4. Memanfaatkan sarana/media secara optimal dalam kegiatan dan"
         " melakukan perawatan berkala."
     )
-
-  # 4. KELOMPOK KEBIJAKAN, SOP, PENCEGAHAN KEKERASAN, & IKLIM SEKOLAH
   elif any(
       kw in k_lower or kw in a_lower
       for kw in [
@@ -432,17 +424,15 @@ def generate_penjelasan_operasional_cerdas(kegiatan, akar_masalah):
       ]
   ):
     return (
-        "1. Membentuk Tim Satuan Tugas (Satgas) Pencegahan dan Penanganan"
-        " Kekerasan / Tim Tata Tertib Sekolah.\n"
-        "2. Menyusun draf SOP, pedoman, atau tata tertib sekolah yang inklusif"
-        " dan ramah anak.\n"
-        "3. Menggelar sosialisasi kebijakan kepada dewan guru, orang tua, dan"
-        " peserta didik.\n"
-        "4. Membuka layanan pengaduan, melakukan pemantauan rutin, serta"
-        " evaluasi berkala iklim keamanan sekolah."
+        f"1. Membentuk Tim Satuan Tugas / Penanggung Jawab untuk program:"
+        f" {k_singkat}.\n"
+        "2. Menyusun draf SOP, pedoman, atau tata tertib sekolah yang transparan"
+        " dan akomodatif.\n"
+        "3. Menyelenggarakan sosialisasi kebijakan kepada dewan guru, peserta"
+        " didik, dan orang tua/wali murid.\n"
+        "4. Melaksanakan pemantauan rutin, layanan pengaduan, dan evaluasi"
+        " berkala efektivitas program."
     )
-
-  # 5. KELOMPOK SMK: TEACHING FACTORY (TEFA), BKK, & LINK AND MATCH DUNIA KERJA
   elif any(
       kw in k_lower or kw in a_lower
       for kw in [
@@ -459,27 +449,25 @@ def generate_penjelasan_operasional_cerdas(kegiatan, akar_masalah):
       ]
   ):
     return (
-        "1. Membentuk Tim Pengelola TeFa / BKK / Penyelaras Kurikulum bersama"
-        " dunia kerja.\n"
-        "2. Menyusun dokumen penyelarasan kurikulum, modul projek, dan jadwal"
-        " blok pembelajaran berbasis industri.\n"
-        "3. Melaksanakan produksi/layanan TeFa, bursa karir, penelusuran"
-        " tamatan (tracer study), dan fasilitasi magang siswa.\n"
-        "4. Melaksanakan evaluasi kemitraan industri serta pelaporan"
-        " penyerapan lulusan."
+        f"1. Membentuk Tim Pengelola / Kemitraan untuk merealisasikan:"
+        f" {k_singkat}.\n"
+        "2. Menyusun dokumen perencanaan, penyelarasan kurikulum, atau jadwal"
+        " operasional berbasis industri.\n"
+        "3. Melaksanakan kegiatan produksi/layanan, bursa karir, penelusuran"
+        " tamatan, atau fasilitasi dunia kerja.\n"
+        "4. Melakukan evaluasi kemitraan dan pelaporan pencapaian program ke"
+        " satuan pendidikan."
     )
-
-  # 6. KELOMPOK UMUM / STRATEGIS LAINNYA
   else:
     return (
-        "1. Membentuk tim kerja / penanggung jawab program kegiatan satuan"
-        " pendidikan.\n"
-        "2. Menyusun jadwal pelaksanaan, instrumen monev, serta alokasi sumber"
-        " daya pendukung.\n"
-        "3. Melaksanakan kegiatan secara partisipatif melibatkan warga"
-        " sekolah dan pemangku kepentingan.\n"
+        f"1. Membentuk tim kerja khusus untuk merancang dan mengoordinasikan:"
+        f" {k_singkat}.\n"
+        "2. Menyusun jadwal pelaksanaan, instrumen pemantauan, serta alokasi"
+        " sumber daya pendukung.\n"
+        "3. Melaksanakan rangkaian kegiatan secara partisipatif melibatkan"
+        " warga sekolah dan pemangku kepentingan.\n"
         "4. Melakukan monitoring capaian, evaluasi hambatan, dan penyusunan"
-        " laporan akuntabilitas program."
+        " laporan pertanggungjawaban program."
     )
 
 
@@ -585,7 +573,6 @@ if uploaded_file is not None:
     try:
       xls_raw = pd.ExcelFile(uploaded_file)
 
-      # Membaca data dan membersihkan kolom/baris kosong
       df_rekom = pd.read_excel(uploaded_file, sheet_name=sheet_pilihan, header=5)
       if df_rekom.shape[1] > 1:
         df_rekom = df_rekom.iloc[:, 1:]
@@ -601,7 +588,6 @@ if uploaded_file is not None:
         ):
           df_rekom = df_rekom.iloc[1:].reset_index(drop=True)
 
-      # Membuat salinan dataframe khusus untuk pratinjau dengan kolom 'No' bernomor 1, 2, 3...
       df_preview = df_rekom.copy()
       df_preview.insert(0, "No", range(1, len(df_preview) + 1))
 
@@ -677,7 +663,6 @@ if uploaded_file is not None:
               kb_lower = kegiatan_benahi.lower()
               ka_lower = kegiatan_arkas_val.lower()
 
-              # 1. Logika Prediksi Biaya
               if (
                   any(
                       kw in kb_lower
@@ -706,7 +691,6 @@ if uploaded_file is not None:
               else:
                 butuh_biaya = "Ya"
 
-              # 2. Penjelasan Implementasi Cerdas & Konkret per Baris
               penjelasan_implementasi = generate_penjelasan_operasional_cerdas(
                   kegiatan_benahi, akar_masalah
               )
@@ -726,7 +710,7 @@ if uploaded_file is not None:
           st.markdown(
               f"""
               <div style="background-color: #1e293b !important; border: 1px solid #3b82f6; padding: 10px 16px; border-radius: 8px; margin: 15px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-                  <p style="color: #60a5fa !important; font-size: 14px !important; font-weight: 700 !important; margin: 0;">🎉 Berhasil menyusun {len(df_rkt_hasil)} baris usulan RKT dengan penjelasan operasional yang spesifik dan konkret!</p>
+                  <p style="color: #60a5fa !important; font-size: 14px !important; font-weight: 700 !important; margin: 0;">🎉 Berhasil menyusun {len(df_rkt_hasil)} baris usulan RKT dengan penjelasan operasional yang dinamis dan spesifik per baris!</p>
               </div>
               """,
               unsafe_allow_html=True,
@@ -751,7 +735,6 @@ if uploaded_file is not None:
           )
           st.markdown("</div></div>", unsafe_allow_html=True)
 
-          # Proses konversi ke Excel dengan openpyxl (mulai dari baris ke-6)
           output = io.BytesIO()
           with pd.ExcelWriter(output, engine="openpyxl") as writer:
             edited_rkt.to_excel(
@@ -769,7 +752,6 @@ if uploaded_file is not None:
           ws_rkt["A4"] = f"NPSN : {st.session_state.npsn}"
           ws_rkt["A4"].font = Font(name="Calibri", size=11, italic=True)
 
-          # Pengaturan Lebar Kolom Otomatis yang Proporsional & Rapi
           col_widths_rkt = {
               "A": 6,
               "B": 28,
@@ -815,7 +797,6 @@ if uploaded_file is not None:
                 )
                 cell.font = Font(name="Calibri", size=11)
 
-          # --- TAMBAHKAN BLOK CATATAN & TANDA TANGAN DI BAGIAN BAWAH ---
           last_row = ws_rkt.max_row
           note_row = last_row + 2
 
@@ -841,7 +822,6 @@ if uploaded_file is not None:
 
           sig_row = note_row + 4
 
-          # Kiri (Mengetahui)
           ws_rkt.cell(row=sig_row, column=2, value="Mengetahui,").font = Font(
               name="Calibri", size=11, bold=True
           )
@@ -859,7 +839,6 @@ if uploaded_file is not None:
               value="Nama Lengkap: ....................................................",
           ).font = Font(name="Calibri", size=11)
 
-          # Kanan (Mengesahkan)
           ws_rkt.cell(
               row=sig_row,
               column=5,
